@@ -168,7 +168,7 @@ class CuttingEnv_EP(Env):
         self.sequence_length = number_of_trials
         print("sequence_length", self.sequence_length )
         self.last_action = None  # Setzen Sie die letzte Aktion auf None zurück
-        model.save('SAC_16_04_2024_V2')
+        model.save('SAC_16_04_2024_V5')
         print("Modell gespeichert")
         return np.array(self.state, dtype=np.float32)
 
@@ -177,6 +177,6 @@ env = CuttingEnv_EP()
 model = SAC("MlpPolicy", env, buffer_size=100, verbose=1)
 # Trainieren des Modells
 model.learn(total_timesteps=200, log_interval=number_of_trials)
-model.save('SAC_16_04_2024_Final_V2')
+model.save('SAC_16_04_2024_Final_V5')
 print("Training beendet")
 

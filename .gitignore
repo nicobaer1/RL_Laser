@@ -9,6 +9,8 @@ A2C.zip
 action_array.txt
 Test_Aylin
 action
+wandb
+
 
 # C extensions
 *.so

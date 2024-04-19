@@ -6,6 +6,8 @@ from gym import Env
 from gym.spaces import Discrete, Box, Dict
 import numpy as np
 from stable_baselines3 import PPO, SAC
+import wandb
+from wandb.integration.sb3 import WandbCallback
 import socket
 import pickle
 
@@ -172,11 +174,20 @@ class CuttingEnv_EP(Env):
         print("Modell gespeichert")
         return np.array(self.state, dtype=np.float32)
 
+
+run = wandb.init(
+    project="sb3",
+    sync_tensorboard=True,  # auto-upload sb3's tensorboard metrics
+    #monitor_gym=True,  # auto-upload the videos of agents playing the game
+    save_code=True,  # optional
+)
+wandb.tensorboard.patch(root_logdir=f"runs/SAC_16_04_2024_Final_V5")
+
 # SAC-Modell initialisieren und trainieren
 env = CuttingEnv_EP()
-model = SAC("MlpPolicy", env, buffer_size=100, verbose=1)
+model = SAC("MlpPolicy", env, buffer_size=100, verbose=1, tensorboard_log=f"runs/SAC_16_04_2024_Final_V5")
 # Trainieren des Modells
-model.learn(total_timesteps=200, log_interval=number_of_trials)
+model.learn(total_timesteps=50, log_interval=1,callback=WandbCallback(verbose=2))
 model.save('SAC_16_04_2024_Final_V5')
 print("Training beendet")
-
+wandb.finish()
